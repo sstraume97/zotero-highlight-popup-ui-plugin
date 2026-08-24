@@ -2,7 +2,7 @@
 
 **Posted on Zotero forum:** https://forums.zotero.org/discussion/133371/ui-suggestion-streamline-the-highlight-color-style-popup-in-the-pdf-reader#latest
 
-**Har utviklet et [popup ui plugin som du kan lese mer om her](readme.md)
+**Har utviklet et [popup ui plugin som du kan lese mer om her](readme.md)**
 
 ## Current behavior 
 
