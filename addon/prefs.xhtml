@@ -1,0 +1,24 @@
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      xmlns:html="http://www.w3.org/1999/xhtml">
+  <groupbox>
+    <label><html:h2>Streamline Highlight Popup</html:h2></label>
+    <hbox align="center" style="gap: 6px; margin-top: 4px;">
+      <html:label for="shp-style-select">Design på farge/stil-popupen:</html:label>
+      <html:select id="shp-style-select" preference="extensions.streamlinehighlightpopup.style">
+        <html:option value="alt1">Alt 1 – Solide firkanter med ikon</html:option>
+        <html:option value="alt2">Alt 2 – Lett kontur-stil (anbefalt)</html:option>
+        <html:option value="alt3">Alt 3 – Rene farger med radetikett</html:option>
+      </html:select>
+    </hbox>
+    <hbox align="center" style="gap: 6px; margin-top: 8px;">
+      <html:label for="shp-size-select">Knappestørrelse:</html:label>
+      <html:select id="shp-size-select" preference="extensions.streamlinehighlightpopup.size">
+        <html:option value="normal">Normal – for mus og styreplate</html:option>
+        <html:option value="tablet">Tablet – større knapper og mer luft</html:option>
+      </html:select>
+    </hbox>
+    <html:div style="font-size: 11px; opacity: 0.7; max-width: 420px; margin-top: 8px;">
+      Øverste rad = highlight, nederste rad = understreking. Klikk en farge for å sette begge deler i ett klikk.
+    </html:div>
+  </groupbox>
+</vbox>
