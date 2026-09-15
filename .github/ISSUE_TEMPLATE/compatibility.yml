@@ -1,0 +1,66 @@
+name: Stopped working after a Zotero update
+description: The plugin worked before, but broke after Zotero was updated
+title: "[Compatibility]: Zotero "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The plugin relies on internal parts of Zotero's reader (class names such as `.selection-popup` and `.color-button`) that are not a public API, so a Zotero update can break it without warning. This template collects what's needed to find out what changed.
+  - type: input
+    id: zotero-version-broken
+    attributes:
+      label: Zotero version where it's broken
+      description: Help → About Zotero.
+      placeholder: "10.1"
+    validations:
+      required: true
+  - type: input
+    id: zotero-version-working
+    attributes:
+      label: Last Zotero version where it worked (if known)
+      placeholder: "10.0"
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      description: Tools → Plugins in Zotero.
+      placeholder: "0.7.3"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+  - type: dropdown
+    id: symptom
+    attributes:
+      label: What happens?
+      options:
+        - The plugin won't install or is disabled ("may be incompatible with this version of Zotero")
+        - The popup shows Zotero's original colour and style rows
+        - The new rows appear, but clicking a colour does nothing
+        - The popup layout looks broken
+        - The settings pane is missing or doesn't save choices
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Anything else that helps — screenshots, what you tried, whether other plugins broke at the same time.
+  - type: textarea
+    id: debug-output
+    attributes:
+      label: Debug output (optional)
+      description: |
+        In Zotero: Help → Debug Output Logging → Enable. Open a PDF and select some text, then Help → Debug Output Logging → View Output, and paste the relevant lines (for example lines containing "Streamline Highlight Popup" or errors).
+        Please don't use "Submit Output" — the resulting Debug ID is only readable by the Zotero team, not by this project. Debug output can include titles from your library, so check before pasting.
+      render: text

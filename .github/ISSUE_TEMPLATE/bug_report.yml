@@ -1,0 +1,102 @@
+name: Bug report
+description: Something in the plugin doesn't work as expected
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. This is a small proof-of-concept plugin maintained in spare time, so a precise report makes a big difference.
+
+        **Did it break right after a Zotero update?** Use the *Stopped working after a Zotero update* template instead.
+
+        **Does the problem persist with this plugin disabled?** Then it's a Zotero issue — please report it on the [Zotero forums](https://forums.zotero.org/).
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      description: Tools → Plugins in Zotero.
+      placeholder: "0.7.3"
+    validations:
+      required: true
+  - type: input
+    id: zotero-version
+    attributes:
+      label: Zotero version
+      description: Help → About Zotero.
+      placeholder: "10.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+  - type: dropdown
+    id: design
+    attributes:
+      label: Design alternative
+      description: Edit → Settings → Highlight Popup.
+      options:
+        - Alt 1 – Solid squares with icon
+        - Alt 2 – Light buttons with coloured icon
+        - Alt 3 – Plain colours with row label
+        - Alt 4 – Solid highlight, light underline
+        - Not sure / happens with all of them
+    validations:
+      required: true
+  - type: dropdown
+    id: size
+    attributes:
+      label: Button size
+      options:
+        - Normal
+        - Tablet
+        - Not sure / happens with both
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe what you see. Screenshots of the popup or settings pane are very helpful — you can paste them straight in here.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: debug-output
+    attributes:
+      label: Debug output (optional)
+      description: |
+        In Zotero: Help → Debug Output Logging → Enable. Reproduce the problem, then Help → Debug Output Logging → View Output, and paste the relevant lines (for example lines containing "Streamline Highlight Popup" or errors).
+        Please don't use "Submit Output" — the resulting Debug ID is only readable by the Zotero team, not by this project. Debug output can include titles from your library, so check before pasting.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I restarted Zotero after installing or updating the plugin.
+          required: true
+        - label: I searched existing issues and didn't find this problem.
+          required: true

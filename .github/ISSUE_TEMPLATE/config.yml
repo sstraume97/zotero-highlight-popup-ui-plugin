@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discuss native support in Zotero
+    url: https://forums.zotero.org/discussion/133371/ui-suggestion-streamline-the-highlight-color-style-popup-in-the-pdf-reader#latest
+    about: The original redesign proposal on the Zotero forums — the place to discuss whether Zotero itself should work like this.
+  - name: Problems with Zotero itself
+    url: https://forums.zotero.org/
+    about: If the problem persists with this plugin disabled, please report it to Zotero.

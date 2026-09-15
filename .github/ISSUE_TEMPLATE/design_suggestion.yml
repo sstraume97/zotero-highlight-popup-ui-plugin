@@ -1,0 +1,42 @@
+name: Feature or design suggestion
+description: Suggest a new design alternative, a setting, or another improvement
+title: "[Suggestion]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This plugin is a proof of concept for a redesign [proposed on the Zotero forums](https://forums.zotero.org/discussion/133371/ui-suggestion-streamline-the-highlight-color-style-popup-in-the-pdf-reader#latest). Suggestions for the plugin are welcome here. If your idea is really about how Zotero itself should work, the forum thread is the better place — that's where the Zotero team looks.
+  - type: dropdown
+    id: area
+    attributes:
+      label: What is it about?
+      options:
+        - A new design alternative for the popup
+        - Button size or spacing
+        - Settings
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's awkward today?
+      description: Describe how you annotate and what gets in the way. For example, "I only use highlights but switch colours often, so…"
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What do you suggest?
+    validations:
+      required: true
+  - type: textarea
+    id: mockup
+    attributes:
+      label: Mockup or sketch (optional)
+      description: A rough sketch or screenshot is often clearer than a description — you can paste images straight in here.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered (optional)
