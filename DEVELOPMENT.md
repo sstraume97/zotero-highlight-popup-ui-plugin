@@ -81,6 +81,12 @@ endelse) i `extensions/`-mappen i Zotero-profilen, med den absolutte stien
 til `addon/`-mappen som innhold, og skru på
 `extensions.experiments.enabled` i `about:config`.
 
+## Oversettelser
+
+Pluginen er på engelsk og norsk bokmål. Tekstene ligger i `STRINGS` i `addon/bootstrap.js`, ikke i Fluent-filer, fordi språket skal kunne velges i innstillingene uavhengig av Zoteros eget språk. Valget «Automatisk» følger `Zotero.locale`.
+
+`addon/prefs.xhtml` har engelske standardtekster. `onPrefsLoad()` i `bootstrap.js` bytter dem til valgt språk når panelet lastes, og på nytt når språkvalget endres. Nye tekster må legges inn for begge språk, og elementer i innstillingspanelet trenger en `id` som er oppført i `PREFS_TEXT` eller `PREFS_ITEM_LABELS`.
+
 ## Release
 
 Releaser bygges automatisk av [`.github/workflows/release.yml`](.github/workflows/release.yml) når en tag som begynner med `v` pushes:

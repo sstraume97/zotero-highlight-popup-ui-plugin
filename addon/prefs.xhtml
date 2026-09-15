@@ -1,32 +1,47 @@
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-      xmlns:html="http://www.w3.org/1999/xhtml">
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      onload="Zotero.StreamlineHighlightPopup?.onPrefsLoad(window)">
   <!-- Menyene bindes til innstillingene av Zotero selv via preference-
        attributtet (full nøkkel). Zoteros egne innstillinger bruker samme
-       mønster: <menulist preference="extensions.zotero..." native="true">. -->
+       mønster: <menulist preference="extensions.zotero..." native="true">.
+
+       Tekstene under er engelske standardtekster. onPrefsLoad() i
+       bootstrap.js bytter dem til valgt språk. Zotero sender "load" til
+       rotelementet etter at panelet er satt inn i dokumentet. -->
   <groupbox>
-    <label><html:h2>Streamline Highlight Popup</html:h2></label>
+    <label><html:h2 id="shp-prefs-title">Streamline Highlight Popup</html:h2></label>
     <hbox align="center" style="gap: 6px; margin-top: 4px;">
-      <label control="shp-style-select">Design på farge/stil-popupen:</label>
+      <label id="shp-style-label" control="shp-style-select">Popup design:</label>
       <menulist id="shp-style-select" preference="extensions.streamlinehighlightpopup.style" native="true">
         <menupopup>
-          <menuitem value="alt1" label="Alt 1 – Solide firkanter med ikon"/>
-          <menuitem value="alt2" label="Alt 2 – Lett kontur-stil (anbefalt)"/>
-          <menuitem value="alt3" label="Alt 3 – Rene farger med radetikett"/>
-          <menuitem value="alt4" label="Alt 4 – Solid highlight, lys understreking"/>
+          <menuitem id="shp-style-alt1" value="alt1" label="Alt 1 – Solid squares with icon"/>
+          <menuitem id="shp-style-alt2" value="alt2" label="Alt 2 – Light buttons with coloured icon (recommended)"/>
+          <menuitem id="shp-style-alt3" value="alt3" label="Alt 3 – Plain colours with row label"/>
+          <menuitem id="shp-style-alt4" value="alt4" label="Alt 4 – Solid highlight, light underline"/>
         </menupopup>
       </menulist>
     </hbox>
     <hbox align="center" style="gap: 6px; margin-top: 8px;">
-      <label control="shp-size-select">Knappestørrelse:</label>
+      <label id="shp-size-label" control="shp-size-select">Button size:</label>
       <menulist id="shp-size-select" preference="extensions.streamlinehighlightpopup.size" native="true">
         <menupopup>
-          <menuitem value="normal" label="Normal – for mus og styreplate"/>
-          <menuitem value="tablet" label="Tablet – større knapper og mer luft"/>
+          <menuitem id="shp-size-normal" value="normal" label="Normal – for mouse and trackpad"/>
+          <menuitem id="shp-size-tablet" value="tablet" label="Tablet – larger buttons with more spacing"/>
         </menupopup>
       </menulist>
     </hbox>
-    <html:div style="font-size: 11px; opacity: 0.7; max-width: 420px; margin-top: 8px;">
-      Øverste rad = highlight, nederste rad = understreking. Klikk en farge for å sette begge deler i ett klikk.
+    <hbox align="center" style="gap: 6px; margin-top: 8px;">
+      <label id="shp-language-label" control="shp-language-select">Language:</label>
+      <menulist id="shp-language-select" preference="extensions.streamlinehighlightpopup.language" native="true">
+        <menupopup>
+          <menuitem id="shp-language-auto" value="auto" label="Automatic (same as Zotero)"/>
+          <menuitem id="shp-language-en" value="en" label="English"/>
+          <menuitem id="shp-language-nb" value="nb" label="Norsk (bokmål)"/>
+        </menupopup>
+      </menulist>
+    </hbox>
+    <html:div id="shp-help" style="font-size: 11px; opacity: 0.7; max-width: 420px; margin-top: 8px;">
+      Top row = highlight, bottom row = underline. Click a colour to set both in one click.
     </html:div>
   </groupbox>
 </vbox>

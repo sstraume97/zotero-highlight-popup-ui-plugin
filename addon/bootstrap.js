@@ -31,6 +31,7 @@
 var PLUGIN_ID = 'streamline-highlight-popup@sondre.local';
 var PREF_STYLE = 'extensions.streamlinehighlightpopup.style';
 var PREF_SIZE = 'extensions.streamlinehighlightpopup.size';
+var PREF_LANGUAGE = 'extensions.streamlinehighlightpopup.language';
 
 // Samme rekkefølge/verdier som ANNOTATION_COLORS i zotero/reader sin
 // src/common/defines.js.
@@ -228,6 +229,150 @@ function getSizePref() {
 	return v === 'tablet' ? 'tablet' : 'normal';
 }
 
+// --- Språk ---------------------------------------------------------------
+// Pluginen har egne tekster i stedet for Fluent, fordi språket skal kunne
+// velges i innstillingene uavhengig av Zoteros eget språk. Nye tekster må
+// legges inn for begge språk.
+
+var API_NAME = 'StreamlineHighlightPopup';
+
+var STRINGS = {
+	en: {
+		prefsTitle: 'Streamline Highlight Popup',
+		styleLabel: 'Popup design:',
+		alt1: 'Alt 1 – Solid squares with icon',
+		alt2: 'Alt 2 – Light buttons with coloured icon (recommended)',
+		alt3: 'Alt 3 – Plain colours with row label',
+		alt4: 'Alt 4 – Solid highlight, light underline',
+		sizeLabel: 'Button size:',
+		sizeNormal: 'Normal – for mouse and trackpad',
+		sizeTablet: 'Tablet – larger buttons with more spacing',
+		languageLabel: 'Language:',
+		languageAuto: 'Automatic (same as Zotero)',
+		help: 'Top row = highlight, bottom row = underline. Click a colour to set both in one click.',
+		highlight: 'Highlight',
+		underline: 'Underline',
+		yellow: 'Yellow',
+		red: 'Red',
+		green: 'Green',
+		blue: 'Blue',
+		purple: 'Purple',
+		magenta: 'Magenta',
+		orange: 'Orange',
+		gray: 'Grey',
+	},
+	nb: {
+		prefsTitle: 'Streamline Highlight Popup',
+		styleLabel: 'Design på farge/stil-popupen:',
+		alt1: 'Alt 1 – Solide firkanter med ikon',
+		alt2: 'Alt 2 – Lett kontur-stil (anbefalt)',
+		alt3: 'Alt 3 – Rene farger med radetikett',
+		alt4: 'Alt 4 – Solid utheving, lys understreking',
+		sizeLabel: 'Knappestørrelse:',
+		sizeNormal: 'Normal – for mus og styreplate',
+		sizeTablet: 'Tablet – større knapper og mer luft',
+		languageLabel: 'Språk:',
+		languageAuto: 'Automatisk (samme som Zotero)',
+		help: 'Øverste rad = utheving, nederste rad = understreking. Klikk en farge for å sette begge deler i ett klikk.',
+		highlight: 'Utheving',
+		underline: 'Understreking',
+		yellow: 'Gul',
+		red: 'Rød',
+		green: 'Grønn',
+		blue: 'Blå',
+		purple: 'Lilla',
+		magenta: 'Magenta',
+		orange: 'Oransje',
+		gray: 'Grå',
+	},
+};
+
+// Språknavnene vises alltid på sitt eget språk, uansett valgt språk.
+var LANGUAGE_NAMES = { en: 'English', nb: 'Norsk (bokmål)' };
+
+// "auto" følger Zotero.locale (f.eks. "nb-NO"). Norsk bokmål, nynorsk og
+// generisk norsk gir norsk; alt annet gir engelsk.
+function resolveLanguage(value) {
+	if (value === 'en' || value === 'nb') {
+		return value;
+	}
+	let locale = '';
+	try {
+		locale = String(Zotero.locale || '');
+	}
+	catch (e) {}
+	return /^(nb|nn|no)\b/i.test(locale) ? 'nb' : 'en';
+}
+
+function getLanguage() {
+	let v;
+	try {
+		v = Zotero.Prefs.get(PREF_LANGUAGE, true);
+	}
+	catch (e) {}
+	return resolveLanguage(v);
+}
+
+function t(lang, key) {
+	return (STRINGS[lang] && STRINGS[lang][key]) || STRINGS.en[key] || key;
+}
+
+// Element-id i prefs.xhtml -> tekstnøkkel.
+var PREFS_TEXT = {
+	'shp-prefs-title': 'prefsTitle',
+	'shp-style-label': 'styleLabel',
+	'shp-size-label': 'sizeLabel',
+	'shp-language-label': 'languageLabel',
+	'shp-help': 'help',
+};
+var PREFS_ITEM_LABELS = {
+	'shp-style-alt1': 'alt1',
+	'shp-style-alt2': 'alt2',
+	'shp-style-alt3': 'alt3',
+	'shp-style-alt4': 'alt4',
+	'shp-size-normal': 'sizeNormal',
+	'shp-size-tablet': 'sizeTablet',
+	'shp-language-auto': 'languageAuto',
+};
+
+function renderPrefs(doc, lang) {
+	for (let [id, key] of Object.entries(PREFS_TEXT)) {
+		let el = doc.getElementById(id);
+		if (el) el.textContent = t(lang, key);
+	}
+	for (let [id, key] of Object.entries(PREFS_ITEM_LABELS)) {
+		let el = doc.getElementById(id);
+		if (el) el.setAttribute('label', t(lang, key));
+	}
+	for (let [code, name] of Object.entries(LANGUAGE_NAMES)) {
+		let el = doc.getElementById('shp-language-' + code);
+		if (el) el.setAttribute('label', name);
+	}
+	// En menulist viser label-attributtet sitt, som ikke oppdateres av seg
+	// selv når teksten på det valgte menyvalget endres.
+	for (let id of ['shp-style-select', 'shp-size-select', 'shp-language-select']) {
+		let list = doc.getElementById(id);
+		if (list && list.selectedItem) {
+			list.setAttribute('label', list.selectedItem.getAttribute('label'));
+		}
+	}
+}
+
+// Kalles fra onload på rotelementet i prefs.xhtml. Zotero sender "load"
+// etter at panelet er satt inn, men før verdiene fra preference-attributtene
+// fylles inn (det skjer i en setTimeout i Zoteros preferences.js), så
+// menyvalgene har riktig tekst når Zotero velger dem.
+function onPrefsLoad(win) {
+	let doc = win.document;
+	renderPrefs(doc, getLanguage());
+	let languageList = doc.getElementById('shp-language-select');
+	if (languageList) {
+		languageList.addEventListener('command', () => {
+			renderPrefs(doc, resolveLanguage(languageList.value));
+		});
+	}
+}
+
 function makeIcon(doc, mode) {
 	let svg = doc.createElementNS(SVG_NS, 'svg');
 	svg.setAttribute('viewBox', '0 0 16 16');
@@ -241,6 +386,7 @@ function makeIcon(doc, mode) {
 }
 
 function buildRow(doc, mode, popupRoot) {
+	let lang = getLanguage();
 	let row = doc.createElement('div');
 	row.className = 'shp-row';
 
@@ -257,7 +403,7 @@ function buildRow(doc, mode, popupRoot) {
 		btn.className = 'shp-swatch';
 		btn.dataset.mode = mode;
 		btn.style.setProperty('--shp-c', hex);
-		btn.title = (mode === 'highlight' ? 'Highlight' : 'Underline') + ' – ' + hex;
+		btn.title = t(lang, mode) + ' – ' + t(lang, entry[0].replace('general-', ''));
 		btn.appendChild(makeIcon(doc, mode));
 
 		btn.addEventListener('click', (event) => {
@@ -367,6 +513,7 @@ function registerPrefPane() {
 async function startup({ id, version, rootURI }, reason) {
 	await Zotero.initializationPromise;
 
+	Zotero[API_NAME] = { onPrefsLoad };
 	registerPrefPane();
 	Zotero.Reader.registerEventListener(
 		'renderTextSelectionPopup',
@@ -377,6 +524,7 @@ async function startup({ id, version, rootURI }, reason) {
 }
 
 function shutdown(data, reason) {
+	delete Zotero[API_NAME];
 	try {
 		Zotero.Reader.unregisterEventListener(
 			'renderTextSelectionPopup',

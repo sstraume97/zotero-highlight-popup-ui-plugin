@@ -36,7 +36,7 @@ This means **all actual annotation logic stays with Zotero**. The plugin never c
 
 Download the `.xpi` from **[releases](https://github.com/sstraume97/zotero-highlight-popup-ui-plugin/releases/latest)**, then in Zotero: **Tools → Add-ons → gear icon → Install Add-on From File…**
 
-Configure it under **Edit → Settings → Highlight Popup**.
+Configure it under **Edit → Settings → Highlight Popup**. The plugin is available in English and Norwegian (Bokmål) and follows Zotero’s language by default; you can also choose the language in the settings.
 
 Requires Zotero 7 or later. Built and tested on Zotero 10.
 

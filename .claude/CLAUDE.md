@@ -40,7 +40,7 @@ Kilde: `chrome/content/zotero/preferences/preferences.js` (`_loadPane`, `_initIm
 - `src` er et XUL-fragment (plugin-paneler har `defaultXUL: true` og parses med `MozXULElement.parseXULToFragment`). Standard navnerom er XUL, HTML-elementer skrives `html:`. Ingen `<?xml?>`, `<!DOCTYPE>` eller `<html>/<body>`.
 - **`scripts` lastes inn i en `Cu.Sandbox` før fragmentet er satt inn i dokumentet.** Et skript kan derfor ikke finne panelets elementer når det kjører, og funksjoner det definerer er ikke synlige for inline-attributter som `onload="..."` i vinduet. Inline `<script>` i selve fragmentet kjøres ikke.
 - **Bind innstillinger med `preference="full.nøkkel"`.** Zotero leser/skriver med `Zotero.Prefs.get/set(nøkkel, true)` og lytter på `command`, `input` og `change`. Fungerer for `<checkbox>` (checked), `<menulist>`, `html:input` m.m. Zoteros egne innstillinger bruker `<menulist preference="extensions.zotero.itemPaneHeader" native="true">`.
-- Etter innsetting sendes en `load`-hendelse til rotelementene i fragmentet. Plugin-malen initialiserer via `onload` på rotelementet som kaller en funksjon på det globale `Zotero`-objektet.
+- Etter innsetting sendes en `load`-hendelse til rotelementene i fragmentet, *før* Zotero fyller inn verdiene fra `preference` (det skjer i en `setTimeout`). Kode som skal jobbe mot panelet: sett `onload` på rotelementet og kall en funksjon som `bootstrap.js` har lagt på det globale `Zotero`-objektet. Her: `Zotero.StreamlineHighlightPopup?.onPrefsLoad(window)`, fjernes igjen i `shutdown`. Plugin-malen bruker samme mønster.
 - `html:select` åpnet seg ikke ved klikk i innstillingsvinduet (observert på Zotero 10). Bruk `<menulist>`.
 
 ### Innstillinger generelt
@@ -65,9 +65,10 @@ Kilde: `zotero/reader`, `src/common/components/view-popup/selection-popup.js` og
 
 ## Prosjektrutiner
 
-- **Versjonering: SemVer** (`MAJOR.MINOR.PATCH`) i `addon/manifest.json`. Øk versjonen for *hver* endring som bygges og sendes til brukeren for testing: PATCH for feilrettinger, MINOR for ny funksjonalitet. Ikke gjenbruk et versjonsnummer. Historikk: 0.7.0 = Alt 4, 0.7.1 = `<menulist>`, 0.7.2 = `preference`-binding, 0.7.3 = ikon.
+- **Versjonering: SemVer** (`MAJOR.MINOR.PATCH`) i `addon/manifest.json`. Øk versjonen for *hver* endring som bygges og sendes til brukeren for testing: PATCH for feilrettinger, MINOR for ny funksjonalitet. Ikke gjenbruk et versjonsnummer. Historikk: 0.7.0 = Alt 4, 0.7.1 = `<menulist>`, 0.7.2 = `preference`-binding, 0.7.3 = ikon, 0.8.0 = engelsk/norsk med språkvalg.
 - Release-tag må være nøyaktig `v` + versjonen (`0.7.2` → `v0.7.2`). `.github/workflows/release.yml` avviser annet, bygger XPI og publiserer releasen ved push av tag.
 - Lokal bygging: `cd addon && zip -r -X ../streamline-highlight-popup-vX.Y.Z.xpi . -x ".*"`. Legg testbygg i scratchpad, ikke i repoet.
+- **Oversettelser:** egne tekster i `STRINGS` i `bootstrap.js` (engelsk og norsk bokmål), ikke Fluent, fordi brukeren vil velge språk i innstillingene uavhengig av Zotero. Nye tekster må inn på begge språk. Se DEVELOPMENT.md.
 - Ikke commit, push eller tag uten klarsignal fra brukeren.
 - Filene sjekkes ut med CRLF på Windows (`.gitattributes: * text=auto`). Tekstbytter i skript må tåle CRLF.
 - README: hvert avsnitt på én linje (brukerens ønske).

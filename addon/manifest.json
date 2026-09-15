@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Streamline Highlight Popup",
-  "version": "0.7.3",
-  "description": "Slår sammen farge- og stil-valg (highlight/underline) i tekstmarkerings-popupen til én rad per stil, slik at du velger farge+stil med ett klikk.",
+  "version": "0.8.0",
+  "description": "Merges colour and style into a single click in Zotero’s text selection popup: one row of colours for highlights and one for underlines. Settings in English and Norwegian.",
   "author": "Sondre",
   "icons": {
     "48": "icons/icon-48.png",
