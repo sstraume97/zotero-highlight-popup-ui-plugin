@@ -8,18 +8,16 @@ Zotero's built-in popup puts the eight annotation colours in one row and the hig
 
 This plugin replaces those two rows with **one row per style**: the top row creates highlights, the bottom row creates underlines, both with the same eight colours in the same order. Colour and style become a single decision.
 
-![The three layout options at both button sizes](assets/Plugin-popup-ui.png)
+![The 4 layout options at both button sizes](assets/Plugin-popup-ui-v0.7.3.png)
 
 ## Layout options
 
 Four visual treatments of the same idea, switchable in the preferences:
 
-| | Description |
-|---|---|
-| **Alt 1** | Solid colour squares with a white icon |
-| **Alt 2** | Light buttons with a coloured icon *(default)* |
-| **Alt 3** | Plain colour squares, with one leading label icon per row |
-| **Alt 4** | Alt 1's solid buttons for highlights, Alt 2's light buttons for underlines — suggested by u/thambos on Reddit |
+1. Solid colour squares with a white icon
+2. Light buttons with a coloured icon *(default)*
+3. Plain colour squares, with one leading label icon per row
+4. Alt 1's solid buttons for highlights, Alt 2's light buttons for underlines — suggested by u/thambos on Reddit
 
 Each is available at two button sizes — **Normal** (25 px, for mouse and trackpad) and **Tablet** (40 px with more spacing, for touch) — giving eight combinations in total.
 
