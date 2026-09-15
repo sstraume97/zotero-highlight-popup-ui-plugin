@@ -1,21 +1,29 @@
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
       xmlns:html="http://www.w3.org/1999/xhtml">
+  <!-- Menyene bindes til innstillingene av Zotero selv via preference-
+       attributtet (full nøkkel). Zoteros egne innstillinger bruker samme
+       mønster: <menulist preference="extensions.zotero..." native="true">. -->
   <groupbox>
     <label><html:h2>Streamline Highlight Popup</html:h2></label>
     <hbox align="center" style="gap: 6px; margin-top: 4px;">
-      <html:label for="shp-style-select">Design på farge/stil-popupen:</html:label>
-      <html:select id="shp-style-select" preference="extensions.streamlinehighlightpopup.style">
-        <html:option value="alt1">Alt 1 – Solide firkanter med ikon</html:option>
-        <html:option value="alt2">Alt 2 – Lett kontur-stil (anbefalt)</html:option>
-        <html:option value="alt3">Alt 3 – Rene farger med radetikett</html:option>
-      </html:select>
+      <label control="shp-style-select">Design på farge/stil-popupen:</label>
+      <menulist id="shp-style-select" preference="extensions.streamlinehighlightpopup.style" native="true">
+        <menupopup>
+          <menuitem value="alt1" label="Alt 1 – Solide firkanter med ikon"/>
+          <menuitem value="alt2" label="Alt 2 – Lett kontur-stil (anbefalt)"/>
+          <menuitem value="alt3" label="Alt 3 – Rene farger med radetikett"/>
+          <menuitem value="alt4" label="Alt 4 – Solid highlight, lys understreking"/>
+        </menupopup>
+      </menulist>
     </hbox>
     <hbox align="center" style="gap: 6px; margin-top: 8px;">
-      <html:label for="shp-size-select">Knappestørrelse:</html:label>
-      <html:select id="shp-size-select" preference="extensions.streamlinehighlightpopup.size">
-        <html:option value="normal">Normal – for mus og styreplate</html:option>
-        <html:option value="tablet">Tablet – større knapper og mer luft</html:option>
-      </html:select>
+      <label control="shp-size-select">Knappestørrelse:</label>
+      <menulist id="shp-size-select" preference="extensions.streamlinehighlightpopup.size" native="true">
+        <menupopup>
+          <menuitem value="normal" label="Normal – for mus og styreplate"/>
+          <menuitem value="tablet" label="Tablet – større knapper og mer luft"/>
+        </menupopup>
+      </menulist>
     </hbox>
     <html:div style="font-size: 11px; opacity: 0.7; max-width: 420px; margin-top: 8px;">
       Øverste rad = highlight, nederste rad = understreking. Klikk en farge for å sette begge deler i ett klikk.

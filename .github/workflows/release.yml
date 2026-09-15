@@ -1,0 +1,55 @@
+name: Release
+
+# Bygger XPI fra addon/ og publiserer en GitHub-release når en tag som
+# begynner med "v" pushes. Taggen må være nøyaktig "v" + versjonen i
+# addon/manifest.json (SemVer), f.eks.:
+#   git tag v0.7.2 && git push origin v0.7.2
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sjekk at tag og manifest-versjon stemmer
+        run: |
+          tag="$GITHUB_REF_NAME"
+          manifest=$(node -p "require('./addon/manifest.json').version")
+          # SemVer: versjonen må være MAJOR.MINOR.PATCH uten ledende nuller,
+          # og taggen må være nøyaktig "v" + versjonen (0.7.2 -> v0.7.2).
+          if ! printf '%s' "$manifest" | grep -Eq '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'; then
+            echo "::error file=addon/manifest.json::version $manifest i addon/manifest.json er ikke SemVer (MAJOR.MINOR.PATCH)"
+            exit 1
+          fi
+          if [ "$tag" != "v$manifest" ]; then
+            echo "::error file=addon/manifest.json::Tag $tag matcher ikke version $manifest i addon/manifest.json (forventet v$manifest)"
+            exit 1
+          fi
+          echo "Tag $tag = manifest $manifest"
+
+      - name: Syntakssjekk
+        run: |
+          node --check addon/bootstrap.js
+
+      - name: Bygg XPI
+        run: |
+          xpi="streamline-highlight-popup-${GITHUB_REF_NAME}.xpi"
+          (cd addon && zip -r -X "../$xpi" . -x '.*')
+          unzip -l "$xpi"
+          echo "XPI=$xpi" >> "$GITHUB_ENV"
+
+      - name: Publiser release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "$XPI" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes

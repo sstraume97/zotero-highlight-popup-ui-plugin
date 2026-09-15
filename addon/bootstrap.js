@@ -152,8 +152,12 @@ var CSS = `
 	fill: currentColor;
 }
 
-/* Alt 1: solide fargede firkanter, hvitt ikon */
-.${GRID_CLASS}[data-style="alt1"] .shp-swatch {
+/* Alt 1: solide fargede firkanter, hvitt ikon.
+ * Alt 4 (forslag fra u/thambos på Reddit) bruker Alt 1 for highlight-raden og
+ * Alt 2 for understrekingsraden, slik at de to radene skiller seg tydelig –
+ * nyttig for dem som mest markerer og vil unngå å treffe understreking. */
+.${GRID_CLASS}[data-style="alt1"] .shp-swatch,
+.${GRID_CLASS}[data-style="alt4"] .shp-swatch[data-mode="highlight"] {
 	color: #fff;
 }
 
@@ -161,13 +165,15 @@ var CSS = `
  * knappeflaten leses – med nesten usynlig kant på hvit popup-bakgrunn ser
  * bare ikonet ut som "knappen", og alternativet virker mindre enn Alt 1/3
  * selv om boksene er nøyaktig like store. */
-.${GRID_CLASS}[data-style="alt2"] .shp-swatch {
+.${GRID_CLASS}[data-style="alt2"] .shp-swatch,
+.${GRID_CLASS}[data-style="alt4"] .shp-swatch[data-mode="underline"] {
 	background: #fff;
 	border: 1px solid rgba(0,0,0,.22);
 	color: var(--shp-c);
 }
 @media (prefers-color-scheme: dark) {
-	.${GRID_CLASS}[data-style="alt2"] .shp-swatch {
+	.${GRID_CLASS}[data-style="alt2"] .shp-swatch,
+	.${GRID_CLASS}[data-style="alt4"] .shp-swatch[data-mode="underline"] {
 		background: rgba(255,255,255,.06);
 		border-color: rgba(255,255,255,.28);
 	}
@@ -210,7 +216,7 @@ function getStylePref() {
 		v = Zotero.Prefs.get(PREF_STYLE, true);
 	}
 	catch (e) {}
-	return v === 'alt1' || v === 'alt3' ? v : 'alt2';
+	return ['alt1', 'alt3', 'alt4'].includes(v) ? v : 'alt2';
 }
 
 function getSizePref() {
@@ -347,8 +353,10 @@ function registerPrefPane() {
 		Zotero.PreferencePanes.register({
 			pluginID: PLUGIN_ID,
 			src: 'prefs.xhtml',
-			scripts: ['prefs-script.js'],
 			label: 'Highlight Popup',
+			// SVG er skarpt i sidemenyens ~20–24 px; uten image bruker Zotero
+			// manifest-ikonet i 24 px (preferencePanes.js).
+			image: 'icons/icon.svg',
 		});
 	}
 	catch (e) {

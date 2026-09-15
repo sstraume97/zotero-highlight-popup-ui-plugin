@@ -1,3 +1,5 @@
+<img src="addon/icons/icon.svg" alt="Streamline Highlight Popup logo" width="96">
+
 # Streamline Highlight Popup
 
 A small Zotero plugin that merges **colour** and **style** into a single click in the reader's text selection popup.
@@ -10,15 +12,16 @@ This plugin replaces those two rows with **one row per style**: the top row crea
 
 ## Layout options
 
-Three visual treatments of the same idea, switchable in the preferences:
+Four visual treatments of the same idea, switchable in the preferences:
 
 | | Description |
 |---|---|
 | **Alt 1** | Solid colour squares with a white icon |
 | **Alt 2** | Light buttons with a coloured icon *(default)* |
 | **Alt 3** | Plain colour squares, with one leading label icon per row |
+| **Alt 4** | Alt 1's solid buttons for highlights, Alt 2's light buttons for underlines — suggested by u/thambos on Reddit |
 
-Each is available at two button sizes — **Normal** (25 px, for mouse and trackpad) and **Tablet** (40 px with more spacing, for touch) — giving six combinations in total.
+Each is available at two button sizes — **Normal** (25 px, for mouse and trackpad) and **Tablet** (40 px with more spacing, for touch) — giving eight combinations in total.
 
 ![Preferences pane](assets/Skjermbilde%202026-08-24%20113838.png)
 

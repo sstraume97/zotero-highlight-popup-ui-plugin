@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <defs>
+    <clipPath id="tl"><polygon points="0,0 96,0 0,96"/></clipPath>
+    <clipPath id="br"><polygon points="96,0 96,96 0,96"/></clipPath>
+  </defs>
+  <g clip-path="url(#br)">
+    <rect x="5" y="5" width="86" height="86" rx="22" fill="#fff" stroke="#c8c8c8" stroke-width="6"/>
+    <path transform="translate(12 6) scale(4.5)" fill="#ff5c5c" stroke="#ff5c5c" stroke-width="0.9" stroke-linejoin="round" fill-rule="evenodd" d="M13,13L8.75,3L7.25,3L3,13L4.63,13L5.905,10L10.095,10L11.37,13L13,13ZM8,5.07L6.33,9L9.67,9L8,5.07Z"/>
+    <rect x="18" y="72" width="60" height="10" rx="2" fill="#ff5c5c"/>
+  </g>
+  <g clip-path="url(#tl)">
+    <rect x="5" y="5" width="86" height="86" rx="22" fill="#ff5c5c" stroke="#e04f4f" stroke-width="6"/>
+    <path transform="translate(12 6) scale(4.5)" fill="#fff" stroke="#fff" stroke-width="0.9" stroke-linejoin="round" fill-rule="evenodd" d="M13,13L8.75,3L7.25,3L3,13L4.63,13L5.905,10L10.095,10L11.37,13L13,13ZM8,5.07L6.33,9L9.67,9L8,5.07Z"/>
+    <rect x="18" y="72" width="60" height="10" rx="2" fill="#fff"/>
+  </g>
+</svg>

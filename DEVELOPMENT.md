@@ -5,12 +5,13 @@ popupen (highlight vs. understreking) til én rad per stil, slik at
 farge+stil velges i ett klikk – basert på ideen beskrevet i
 `streamline the highlight style popup.md`.
 
-Alle tre design-alternativene er implementert som CSS-varianter du bytter
+Alle fire design-alternativene er implementert som CSS-varianter du bytter
 mellom i innstillingene:
 
 - **Alt 1** – solide fargede firkanter med hvitt ikon
 - **Alt 2** – lys bakgrunn, farget ikon (standard)
 - **Alt 3** – rene fargeruter uten ikon, med én radetikett foran hver rad
+- **Alt 4** – Alt 1 for highlight-raden, Alt 2 for understrekingsraden (forslag fra u/thambos på Reddit)
 
 Alle knapper er 25×25 px i alle tre variantene.
 
@@ -38,10 +39,7 @@ Notert her fordi hvert av disse punktene kostet en feilsøkingsrunde:
 - **`prefs.xhtml` er et XUL-*fragment*.** Ingen `<?xml?>`, `<!DOCTYPE>`
   eller `<html>/<body>` – det gir «XML or text declaration not at start of
   entity» og et panel som ikke åpner seg.
-- **`<script>` inne i fragmentet kjøres aldri.** JS må ligge i egen fil
-  registrert via `scripts: [...]` i `PreferencePanes.register()`, og der
-  fungerer `addEventListener`-varianten – ikke `onload`/`onchange`-attributter
-  som refererer til funksjoner ved navn.
+- **Innstillinger bindes med `preference`-attributtet, ikke med skript.** Zotero laster filene i `scripts: [...]` inn i en sandkasse *før* panelets XHTML er satt inn i dokumentet (`_loadPane` i Zoteros `preferences/preferences.js`), så et skript finner ikke menyene når det kjører. Inline `<script>` i fragmentet kjøres heller ikke. Sett i stedet `preference="full.nøkkel"` på elementet; Zotero leser og skriver da innstillingen selv. Bruk `<menulist>` for nedtrekksmenyer – `html:select` åpnet seg ikke ved klikk.
 - **Zotero wrapper plugin-innhold i `.custom-sections > .section`**, som i
   deres egen `_view-popup.scss` har `border-top: 1px solid #d7dad7`. Den
   delelinjen kommer altså fra Zotero, ikke fra pluginens egen CSS, og må
@@ -82,3 +80,20 @@ file»-metode: lag en fil `streamline-highlight-popup@sondre.local` (uten
 endelse) i `extensions/`-mappen i Zotero-profilen, med den absolutte stien
 til `addon/`-mappen som innhold, og skru på
 `extensions.experiments.enabled` i `about:config`.
+
+## Release
+
+Releaser bygges automatisk av [`.github/workflows/release.yml`](.github/workflows/release.yml) når en tag som begynner med `v` pushes:
+
+1. Sett `version` i `addon/manifest.json`, f.eks. `0.8.0`.
+2. Commit og push.
+3. Lag og push taggen:
+
+   ```bash
+   git tag v0.8.0
+   git push origin v0.8.0
+   ```
+
+Versjonering følger [SemVer](https://semver.org/): `MAJOR.MINOR.PATCH`. Øk PATCH for feilrettinger, MINOR for ny funksjonalitet (f.eks. et nytt design-alternativ) og MAJOR for endringer som bryter eksisterende oppførsel. Hvert bygg som deles for testing får nytt versjonsnummer.
+
+Workflowen sjekker først at versjonen i manifestet er gyldig SemVer og at taggen er nøyaktig `v` + versjonen (`0.8.0` → `v0.8.0`), syntakssjekker `bootstrap.js`, bygger `streamline-highlight-popup-v0.8.0.xpi` og lager en GitHub-release med filen og automatisk genererte release notes. Stemmer ikke versjonene, stopper den før noe publiseres.
